@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <pthread.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 void *soma (void *arg);
 
