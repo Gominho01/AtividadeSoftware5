@@ -11,46 +11,36 @@
 ## Declaração das variaveis globais e do mutex
 
 ```c 
+void *soma (void *arg);
+
 int total = 0;
-int *valor;
-int tam = 0;
-int aux = 0;
-int aux_tam;
+int linha;
+int tam;
 int matriz[1000][1000];
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // inicializador padrão
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // inicializador padrao
 ```
 
-## Inicio do main
+## Matriz
 
 ```c
-  scanf("%d ", &tam);
-  aux_tam = tam;
+scanf("%d ", &tam);
   
-  // criando o array com o tamanho da matriz
-	valor = malloc(sizeof(int) * (tam * tam));
-  
-  // declaração de variaveis
-	pthread_t threads[tam];
-  int i = 0;
-  int cont = 0;
-```
+// declaracao de variaveis
+pthread_t threads[tam];
+int i = 0;
 
-## Matriz e array
-
-```c
-  // criação da matriz e adicionando os valores em um array
-	for(i = 0; i<tam; i++){
-		for(int j = 0; j<tam; j++){
-			scanf(" %d", &valor[cont]);
-			matriz[i][j] = valor[j];
-      cont++;
-		}
-	}
+// criacao da matriz
+for(i = 0; i < tam; i++){
+    for(int j = 0; j < tam; j++){
+	scanf(" %d", &matriz[i][j]);
+    }
+}
 ```
 
 ## Thread
 
 ```c
+  // criando as threads
 	for(i = 0; i < tam; i++){
 		if(pthread_create(&(threads[i]), NULL, soma, NULL) != 0){
 			printf("Thread %d not created\n", i);
@@ -61,6 +51,7 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // inicializador padrão
 	}
 	printf("%d\n", total);
 	return 0;
+}
 ```
 
 ## Função Soma
@@ -69,13 +60,14 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // inicializador padrão
 void *soma(void *arg){
 	pthread_mutex_lock(&mutex);
   int i = 0;
+  int valor_linha = 0;
 
-	for(i = aux; i < aux_tam; i++){
-		total += valor[i]; 
+	for(i = 0; i < tam; i++){
+		valor_linha += matriz[linha][i]; 
 	}
-  
-	aux = aux_tam;
-	aux_tam += tam;
+
+  total += valor_linha;
+  linha++;
 	pthread_mutex_unlock(&mutex);
 	return arg;
 }
