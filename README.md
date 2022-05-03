@@ -23,7 +23,7 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // inicializador padrão
 ## Inicio do main
 
 ```c
- 	scanf("%d ", &tam);
+  scanf("%d ", &tam);
   aux_tam = tam;
   
   // criando o array com o tamanho da matriz
